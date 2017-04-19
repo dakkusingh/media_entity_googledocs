@@ -1,0 +1,5 @@
+{
+  "name": "drupal/media_entity_googledocs",
+  "description": "Integrate GoogleDocs with Media entities.",
+  "type": "drupal-module"
+}
