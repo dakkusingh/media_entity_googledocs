@@ -69,8 +69,8 @@ class GoogleDocs extends MediaTypeBase {
    * @var array
    */
   public static $validationRegexp = array(
-    '@(?<shortcode>((http|https):){0,1}//(www\.){0,1}docs\.google\.com/(?<type>(spreadsheets|presentation|document)+)/d/(?<id>[a-zA-Z0-9_-]+)/(pubhtml|pub\?embedded=true|embed)[^\"]*+)@i' => 'shortcode',
-    '@<iframe src="(?<shortcode>((http|https):){0,1}//(www\.){0,1}docs\.google\.com/(?<type>(spreadsheets|presentation|document)+)/d/(?<id>[a-zA-Z0-9_-]+)/(pubhtml|pub\?embedded=true|embed)[^\"]*+)"(.*)></iframe>@i' => 'shortcode',
+    '@(?<shortcode>((http|https):){0,1}//(www\.){0,1}docs\.google\.com/.*(?<type>(spreadsheets|presentation|document|forms)+)/d/(e/)?(?<id>[a-zA-Z0-9_-]+)/(pubhtml|pub\?embedded=true|embed|viewform\?embedded=true)[^\"]*+)@i' => 'shortcode',
+    '@<iframe src="(?<shortcode>((http|https):){0,1}//(www\.){0,1}docs\.google\.com/.*(?<type>(spreadsheets|presentation|document|forms)+)/d/(e/)?(?<id>[a-zA-Z0-9_-]+)/(pubhtml|pub\?embedded=true|embed|viewform\?embedded=true)[^\"]*+)"(.*)>(.*)</iframe>@i' => 'shortcode',
   );
 
   /**
