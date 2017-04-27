@@ -79,7 +79,8 @@ class GoogleDocs extends MediaTypeBase {
   public function providedFields() {
     $fields = array(
       'shortcode' => $this->t('GoogleDocs shortcode'),
-      'type' => $this->t('Document type (document, presentation, ...)')
+      'type' => $this->t('Document type (document, presentation, ...)'),
+      'id' => $this->t('Document ID'),
     );
 
     return $fields;
