@@ -8,7 +8,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\media_entity\MediaInterface;
 use Drupal\media_entity\MediaTypeBase;
-use Drupal\media_entity\MediaTypeException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -70,9 +69,8 @@ class GoogleDocs extends MediaTypeBase {
    * @var array
    */
   public static $validationRegexp = array(
-    // TODO Allow embedding bu URL.
-    // '@((http|https):){0,1}//(www\.){0,1}googledocs\.com/gallery/(?<shortcode>[a-z0-9_-]+)@i' => 'shortcode',
-    '@(?P<shortcode><blockquote class=\"googledocs-embed-pub\" lang=\"en\" data-id=\"(.*)\"><a href=\"//googledocs.com/(?P<googledocsid>.*)\">(.*)</a></blockquote><script async src=\"//s.googledocs.com/min/embed.js\" charset=\"utf-8\"></script>)@i' => 'shortcode',
+    '@(?<shortcode>((http|https):){0,1}//(www\.){0,1}docs\.google\.com/(?<type>(spreadsheets|presentation|document)+)/d/(?<id>[a-zA-Z0-9_-]+)/(pubhtml|pub\?embedded=true|embed)[^\"]*+)@i' => 'shortcode',
+    '@<iframe src="(?<shortcode>((http|https):){0,1}//(www\.){0,1}docs\.google\.com/(?<type>(spreadsheets|presentation|document)+)/d/(?<id>[a-zA-Z0-9_-]+)/(pubhtml|pub\?embedded=true|embed)[^\"]*+)"(.*)></iframe>@i' => 'shortcode',
   );
 
   /**
@@ -96,8 +94,8 @@ class GoogleDocs extends MediaTypeBase {
       return FALSE;
     }
 
-    if ($name == 'shortcode') {
-      return $matches['shortcode'];
+    if (!empty($matches[$name])) {
+      return $matches[$name];
     }
 
     return FALSE;
@@ -110,6 +108,7 @@ class GoogleDocs extends MediaTypeBase {
     $options = [];
     $bundle = $form_state->getFormObject()->getEntity();
     $allowed_field_types = ['string', 'string_long', 'link'];
+
     foreach ($this->entityFieldManager->getFieldDefinitions('media', $bundle->id()) as $field_name => $field) {
       if (in_array($field->getType(), $allowed_field_types) && !$field->getFieldStorageDefinition()->isBaseField()) {
         $options[$field_name] = $field->getLabel();
@@ -176,15 +175,16 @@ class GoogleDocs extends MediaTypeBase {
    * {@inheritdoc}
    */
   public function getDefaultThumbnail() {
-    return $this->config->get('icon_base') . '/googledocs.png';
+    return $this->config->get('icon_base') . '/googledocs_generic.png';
   }
 
   /**
    * {@inheritdoc}
    */
   public function thumbnail(MediaInterface $media) {
-    if ($local_image = $this->getField($media, 'thumbnail_local')) {
-      return $local_image;
+    $type = $this->getField($media, 'type');
+    if (in_array($type, ['document', 'spreadsheets', 'presentation'])) {
+      return $this->config->get('icon_base') . '/googledocs_' . $type . '.png';
     }
 
     return $this->getDefaultThumbnail();
@@ -194,13 +194,10 @@ class GoogleDocs extends MediaTypeBase {
    * {@inheritdoc}
    */
   public function getDefaultName(MediaInterface $media) {
-    // Try to get some fields that need the API, if not available, just use the
-    // shortcode as default name.
-
-    $username = $this->getField($media, 'username');
+    $type = $this->getField($media, 'type');
     $id = $this->getField($media, 'id');
-    if ($username && $id) {
-      return $username . ' - ' . $id;
+    if ($type && $id) {
+      return $type . ' - ' . $id;
     }
     else {
       $code = $this->getField($media, 'shortcode');
