@@ -183,7 +183,7 @@ class GoogleDocs extends MediaTypeBase {
    */
   public function thumbnail(MediaInterface $media) {
     $type = $this->getField($media, 'type');
-    if (in_array($type, ['document', 'spreadsheets', 'presentation'])) {
+    if (in_array($type, ['document', 'spreadsheets', 'presentation', 'forms'])) {
       return $this->config->get('icon_base') . '/googledocs_' . $type . '.png';
     }
 
