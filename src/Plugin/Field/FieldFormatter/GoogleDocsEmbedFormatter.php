@@ -27,7 +27,7 @@ class GoogleDocsEmbedFormatter extends FormatterBase {
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $element = array();
+    $element = [];
     $settings = $this->getSettings();
     foreach ($items as $delta => $item) {
       foreach (GoogleDocs::$validationRegexp as $pattern => $key) {
@@ -76,35 +76,35 @@ class GoogleDocsEmbedFormatter extends FormatterBase {
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $elements = parent::settingsForm($form, $form_state);
 
-    $elements['width'] = array(
+    $elements['width'] = [
       '#type' => 'number',
       '#title' => $this->t('Width'),
       '#default_value' => $this->getSetting('width'),
       '#min' => 1,
       '#description' => $this->t('Width of spreadsheet.'),
-    );
+    ];
 
-    $elements['height'] = array(
+    $elements['height'] = [
       '#type' => 'number',
       '#title' => $this->t('Height'),
       '#default_value' => $this->getSetting('height'),
       '#min' => 1,
       '#description' => $this->t('Height of spreadsheet.'),
-    );
+    ];
 
-    $elements['scrolling'] = array(
+    $elements['scrolling'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Scrolling'),
       '#default_value' => $this->getSetting('scrolling'),
       '#description' => $this->t('Add scrolling bar if the document is larger/longer than the given width/height.'),
-    );
+    ];
 
-    $elements['fullscreen'] = array(
+    $elements['fullscreen'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Fullscreen'),
       '#default_value' => $this->getSetting('fullscreen'),
       '#description' => $this->t('Allow fullscreen (this is not applicable to all GoogleDocs types).'),
-    );
+    ];
 
     return $elements;
   }

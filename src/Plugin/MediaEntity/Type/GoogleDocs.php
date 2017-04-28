@@ -68,20 +68,20 @@ class GoogleDocs extends MediaTypeBase {
    *
    * @var array
    */
-  public static $validationRegexp = array(
+  public static $validationRegexp = [
     '@(?<shortcode>((http|https):){0,1}//(www\.){0,1}docs\.google\.com/.*(?<type>(spreadsheets|presentation|document|forms)+)/d/(e/)?(?<id>[a-zA-Z0-9_-]+)/(pubhtml|pub\?embedded=true|embed|viewform\?embedded=true)[^\"]*+)@i' => 'shortcode',
     '@<iframe src="(?<shortcode>((http|https):){0,1}//(www\.){0,1}docs\.google\.com/.*(?<type>(spreadsheets|presentation|document|forms)+)/d/(e/)?(?<id>[a-zA-Z0-9_-]+)/(pubhtml|pub\?embedded=true|embed|viewform\?embedded=true)[^\"]*+)"(.*)>(.*)</iframe>@i' => 'shortcode',
-  );
+  ];
 
   /**
    * {@inheritdoc}
    */
   public function providedFields() {
-    $fields = array(
+    $fields = [
       'shortcode' => $this->t('GoogleDocs shortcode'),
       'type' => $this->t('Document type (document, presentation, ...)'),
       'id' => $this->t('Document ID'),
-    );
+    ];
 
     return $fields;
   }
@@ -158,7 +158,7 @@ class GoogleDocs extends MediaTypeBase {
    * @see preg_match()
    */
   protected function matchRegexp(MediaInterface $media) {
-    $matches = array();
+    $matches = [];
     if (isset($this->configuration['source_field'])) {
       $source_field = $this->configuration['source_field'];
       if ($media->hasField($source_field)) {
