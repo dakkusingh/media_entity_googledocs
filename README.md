@@ -5,7 +5,7 @@ provider plugin) for Media entities.
 ![media-entity-googledocs](_documentation/images/googledocs-media.jpg)
 
 /!\ Be aware of the different versions. As [Media Entity Module](https://www.drupal.org/project/media_entity) will be [merged into Drupal core in 8.4](https://www.drupal.org/node/2863992), it is important to download the appropriate version of the module.
-- 8.x-3.x version is appropriate for any installation with Drupal core 8.3.x and lower. It depends on [Media Entity Module](https://www.drupal.org/project/media_entity) to work.
+- 8.x-1.x version is appropriate for any installation with Drupal core 8.3.x and lower. It depends on [Media Entity Module](https://www.drupal.org/project/media_entity) to work.
 - 8.x-4.x version is appropriate for Drupal core 8.4.x and upper.
 
 ## Installation
