@@ -3,7 +3,6 @@
   "description": "Integrate GoogleDocs with Media entities.",
   "type": "drupal-module",
   "require": {
-    "drupal/core": "<=8.3",
-    "drupal/media_entity": "^1.0"
+    "drupal/core": ">=8.4"
   }
 }
